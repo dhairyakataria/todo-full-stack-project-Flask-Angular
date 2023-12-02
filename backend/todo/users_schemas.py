@@ -17,3 +17,7 @@ class UserQuerySchema(Schema):
 # Schema for success messages
 class SuccessMessageSchema(Schema):
     message = fields.Str(dump_only=True)
+
+class LoginResponseSchema(Schema):
+    message = fields.String(required=True)
+    access_token = fields.String(required=True)
