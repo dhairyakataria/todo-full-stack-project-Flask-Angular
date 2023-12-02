@@ -22,5 +22,7 @@ api = Api(app)
 db = SQLAlchemy(app)
 
 from todo import users_routes
+from todo import tasks_routes
 # Register the User Blueprint
 api.register_blueprint(users_routes.blp)
+api.register_blueprint(tasks_routes.blp)

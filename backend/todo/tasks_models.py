@@ -8,7 +8,7 @@ class TaskModel(db.Model):
     id = db.Column('task_id', db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey('users.user_id'), nullable=False)
     task_description = db.Column(db.Text, nullable=False)
-    due_date = db.Column(db.DateTime)
+    # due_date = db.Column(db.DateTime)
     completed = db.Column(db.Boolean, default=False)
 
     def __init__(self, user_id, task_description, due_date=None, completed=False):
