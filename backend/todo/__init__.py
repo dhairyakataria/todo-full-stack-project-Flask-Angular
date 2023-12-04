@@ -2,6 +2,7 @@ from flask import Flask
 from flask_smorest import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 # Create a Flask app
 app = Flask(__name__)
@@ -25,7 +26,7 @@ app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access']
 
 # Set up a set to store revoked (blacklisted) tokens
 app.config['BLACKLIST'] = set()
-
+CORS(app)
 jwt = JWTManager(app)
 
 api = Api(app)
