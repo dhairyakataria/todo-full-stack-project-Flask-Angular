@@ -35,9 +35,9 @@ class Login(MethodView):
                 # Create JWT refresh token
                 # refresh_token = create_refresh_token(identity=user.id)
                 print(access_token)
-                return {'message': 'Login successful', 'access_token': access_token}, 200
+                return {'message': 'Login successful', "log_in":True, 'access_token': access_token}, 200
             else:
-                return {'message': 'Invalid credentials'}, 401
+                return {'message': 'Invalid credentials', "log_in":False}, 401
 
         except Exception as e:
             current_app.logger.error(f"Error during login: {str(e)}")

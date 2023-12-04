@@ -20,4 +20,5 @@ class SuccessMessageSchema(Schema):
 
 class LoginResponseSchema(Schema):
     message = fields.String(required=True)
+    log_in = fields.Boolean(required=True)
     access_token = fields.String(required=True)
