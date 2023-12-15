@@ -47,7 +47,6 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (res: any) => {
           if (res.log_in) {
-            alert('LogIn Success');
             localStorage.setItem('loginToken', res.access_token);
             this.router.navigateByUrl('/home');
           } else {

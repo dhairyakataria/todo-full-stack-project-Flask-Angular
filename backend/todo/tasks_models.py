@@ -11,8 +11,7 @@ class TaskModel(db.Model):
     # due_date = db.Column(db.DateTime)
     completed = db.Column(db.Boolean, default=False)
 
-    def __init__(self, user_id, task_description, due_date=None, completed=False):
+    def __init__(self, user_id, task_description, completed=False):
         self.user_id = user_id
         self.task_description = task_description
-        self.due_date = due_date
         self.completed = completed

@@ -1,5 +1,6 @@
 from flask import abort
 from flask.views import MethodView
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_smorest import Blueprint
 from todo.tasks_schemas import TaskQuerySchema, TaskSchema, SuccessMessageSchema, TaskUpdateSchema
 from todo import db
@@ -15,24 +16,31 @@ class Tasks(MethodView):
         self.db = db
     
     @blp.response(200, TaskSchema(many=True))
+    @jwt_required()  # Require a valid JWT token for this route
     def get(self):
         try:
             list_tasks = []
-            tasks = TaskModel.query.all()
+            # Extract user_id from the JWT token
+            user_id = get_jwt_identity()
+            print("user id  ", user_id)
+            # Use the user_id to fetch tasks specific to that user
+            tasks = TaskModel.query.filter_by(user_id=user_id).all()
             sch = TaskSchema()
-            print(tasks)
-            for task in tasks:
-                print(task.__dict__)
-                list_tasks.append(sch.dump(task))
+            
+            # Use many=True to include task_id in the output
+            list_tasks = [sch.dump(task) for task in tasks]
+        
             return list_tasks
         except Exception as e:
             abort(500, description=f"Internal Server Error: {str(e)}")
 
     @blp.response(201, SuccessMessageSchema)
     @blp.arguments(TaskSchema)
+    @jwt_required()  # Require a valid JWT token for this route
     def post(self, task_data):
         try:
-            user_id = task_data["user_id"]
+            user_id = get_jwt_identity()
+            print(user_id)
             task_description = task_data["task_description"]
             # due_date = task_data.get("due_date")
             completed = task_data.get("completed", False)
@@ -75,9 +83,8 @@ class Tasks(MethodView):
             print(task_data)
             if task:
                 # Update task fields based on the provided data
-                # task.user_id = task_data.get("user_id", task.user_id)
+                task.user_id = task_data.get("user_id", task.user_id)
                 task.task_description = task_data.get("task_description", task.task_description)
-                # task.due_date = task_data.get("due_date", task.due_date)
                 task.completed = task_data.get("completed", task.completed)
 
                 db.session.commit()

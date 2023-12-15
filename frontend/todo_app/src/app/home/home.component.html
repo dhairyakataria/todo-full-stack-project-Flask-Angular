@@ -1,1 +1,33 @@
-<p>home works!</p>
+<div class="container mt-5">
+  <h1 style="color: black;">Todo List</h1>
+
+  <div class="mb-3">
+    <input [(ngModel)]="newTodo" class="form-control" placeholder="New Todo" />
+    <button (click)="addTodo()" class="btn btn-primary mt-2" style="background-color: black; color: white;">Add
+      Todo</button>
+  </div>
+
+  <ul class="list-group">
+    <li *ngFor="let todo of todos; let i = index" class="list-group-item"
+      style="background-color: white; color: black;">
+      <span *ngIf="editingIndex !== i; else editMode">
+        {{ todo.task_description }}
+        <div>
+          <button (click)="editTodo(i)" class="btn btn-warning btn-sm me-2"
+            style="background-color: gray; color: white;">Edit</button>
+          <button (click)="deleteTodo(todo.user_id)" class="btn btn-danger btn-sm"
+            style="background-color: black; color: white;">Delete</button>
+        </div>
+      </span>
+      <ng-template #editMode>
+        <input [(ngModel)]="todos[i].task_description" class="form-control" />
+        <div class="mt-2">
+          <button (click)="saveTodo(i)" class="btn btn-success btn-sm me-2"
+            style="background-color: black; color: white;">Save</button>
+          <button (click)="cancelEdit()" class="btn btn-secondary btn-sm"
+            style="background-color: gray; color: white;">Cancel</button>
+        </div>
+      </ng-template>
+    </li>
+  </ul>
+</div>
